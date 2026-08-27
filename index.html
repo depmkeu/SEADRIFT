@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEADRIFT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background: #f0f7f4;
+      display: flex;
+      justify-content: center;
+      padding: 36px 16px 56px;
+    }
+
+    .page { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 26px 22px;
+      border: 1px solid #d4ede3;
+      box-shadow: 0 2px 12px rgba(0,120,80,0.07);
+    }
+
+    /* ── Section label ── */
+    .sec-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #2f7d5c;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .divider { border: none; border-top: 1.5px solid #e8f5ee; margin: 18px 0; }
+
+    /* ── Logo float ── */
+    .logo-wrap { animation: fl 5s ease-in-out infinite; display: inline-block; }
+    @keyframes fl { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+    /* ── Link button ── */
+    .link-btn {
+      display: flex; align-items: center; gap: 12px;
+      width: 100%; padding: 13px 16px;
+      border-radius: 13px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      border: none; cursor: pointer;
+    }
+    .link-btn:hover  { transform: translateY(-2px); }
+    .link-btn:active { transform: scale(0.98); }
+
+    .btn-ig, .btn-mail, .btn-guide {
+      background: #fff;
+      border: 1.5px solid #d9edE5;
+      color: #0a3d28;
+      box-shadow: 0 2px 10px rgba(0,120,80,0.05);
+    }
+    .btn-ig:hover, .btn-mail:hover, .btn-guide:hover { border-color:#b8dece; }
+    .link-btn .btn-sub { font-size:10px; opacity:0.65; font-weight:400; margin-top:1px; color:#2f7d5c; }
+
+    .btn-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Video ── */
+    .video-wrap {
+      position: relative; padding-bottom: 56.25%;
+      border-radius: 13px; overflow: hidden;
+      background: #e4f4ed; border: 1.5px solid #b8dece; margin-top: 8px;
+    }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* ── Accordion trigger ── */
+    .acc-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: none; border: none; cursor: pointer;
+      font-family: 'Poppins', sans-serif; padding: 0; text-align: left;
+    }
+    .acc-arrow {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: #e8f5ee; border: 1px solid #b8dece;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform .3s;
+    }
+    .acc-arrow svg { transition: transform .3s; }
+    .acc-arrow.open svg { transform: rotate(180deg); }
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+    }
+    .acc-body.open { max-height: 2000px; }
+
+    /* ── Paper references ── */
+    .paper-wrap {
+      background: #fffdf8; border-radius: 14px;
+      border: 1px solid #ddd8c8;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06), inset 0 1px 0 #fff;
+      overflow: hidden; margin-top: 8px; position: relative;
+    }
+    .paper-wrap::before {
+      content: ''; position: absolute;
+      top: 0; left: 46px; right: 0; bottom: 0;
+      border-left: 1.5px solid rgba(255,100,100,0.12); pointer-events: none;
+    }
+    .paper-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(transparent, transparent 27px, rgba(30,100,200,0.055) 28px);
+      pointer-events: none;
+    }
+    .paper-inner { padding: 16px 16px; position: relative; z-index: 1; }
+    .ref-item {
+      font-size: 10.5px; line-height: 1.7; color: #374151;
+      padding: 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.08);
+    }
+    .ref-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .ref-num { font-weight: 700; color: #1e5fb0; margin-right: 3px; }
+    .ref-doi {
+      color: #1a58c0; text-decoration: none;
+      word-break: break-all; font-size: 9.5px;
+    }
+    .ref-doi:hover { text-decoration: underline; }
+
+    /* ── Expert cards ── */
+    .expert-card {
+      border: 1.5px solid #c8e6d8; border-radius: 14px;
+      overflow: hidden; background: #f8fdfc;
+    }
+    .expert-head {
+      padding: 13px 15px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: #fff;
+    }
+    .expert-head:hover { background: #f3faf7; }
+    .expert-field { font-size: 12px; font-weight: 700; color: #0a3d28; }
+    .expert-name-sm { font-size: 10.5px; color: #2f8a68; margin-top: 2px; }
+    .criteria-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .criteria-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 10.5px; line-height: 1.6; color: #374151;
+    }
+    .criteria-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #22c97a; flex-shrink: 0; margin-top: 5px;
+    }
+
+    /* ── Identitas ── */
+    .member-row {
+      display: flex; align-items: center; gap: 11px;
+      padding: 9px 0; border-bottom: 1px solid #e8f5ee;
+    }
+    .member-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .av {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+    .mname { font-size: 12px; font-weight: 600; color: #0a3d28; }
+    .mrole { font-size: 10px; color: #2f7d5c; margin-top: 1px; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── CARD 1: Header + IG + Video + Dafpus ── -->
+  <div class="card">
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:22px;">
+      <div class="logo-wrap" style="margin-bottom:12px;">
+        <img src="logo.png" alt="SEADRIFT Logo"
+             style="width:64px;height:64px;border-radius:16px;display:block;margin:0 auto;object-fit:cover;" />
+      </div>
+      <h1 style="font-size:21px;font-weight:800;color:#0a3d28;letter-spacing:0.1em;">SEADRIFT</h1>
+      <p style="font-size:11px;color:#22a878;font-weight:500;margin-top:3px;">Seaweed Drying and Forecasting System</p>
+      <p style="font-size:12.5px;color:#0d7a50;font-weight:600;margin-top:9px;font-style:italic;">"Drive Data to Value"</p>
+    </div>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/seadrift.ind?igsi=MWJtcnI3aTZ4MWI0MA==" target="_blank" rel="noopener" class="link-btn btn-ig">
+      <div class="btn-icon" style="background:#eef6f5;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2b6f7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </div>
+      <div style="flex:1;">
+        <div>@seadrift.ind</div>
+        <div class="btn-sub">Instagram · Follow us</div>
+      </div>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6f9484" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+
+    <!-- Email -->
+    <a href="mailto:customercare.seadrift@gmail.com" class="link-btn btn-mail" style="margin-top:10px;">
+      <div class="btn-icon" style="background:#eaf3fb;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2f6f97" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 7 10-7"/>
+        </svg>
+      </div>
+      <div style="flex:1;">
+        <div>customercare.seadrift@gmail.com</div>
+        <div class="btn-sub">Email · Customer Care</div>
+      </div>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6f9484" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+
+    <!-- Buku Panduan -->
+    <a href="https://drive.google.com/drive/folders/1Pj4ag8ukNIRPtwqRaWQm5szWZK9y6uR-?usp=sharing" target="_blank" rel="noopener" class="link-btn btn-guide" style="margin-top:10px;">
+      <div class="btn-icon" style="background:#e8f6ef;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1f8f5c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div style="flex:1;">
+        <div>Buku Panduan</div>
+        <div class="btn-sub">PDF · Google Drive</div>
+      </div>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6f9484" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+
+    <hr class="divider" />
+
+    <!-- Video -->
+    <div class="sec-label">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="#22a878"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Video
+    </div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1"
+        title="SEADRIFT Demo"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen loading="lazy">
+      </iframe>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Daftar Pustaka (Accordion) -->
+    <button class="acc-trigger" onclick="toggleAcc('dafpus')">
+      <div class="sec-label" style="margin-bottom:0;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Daftar Pustaka
+      </div>
+      <div class="acc-arrow" id="arrow-dafpus">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </button>
+
+    <div class="acc-body" id="body-dafpus">
+      <div class="paper-wrap" style="margin-top:10px;">
+        <div class="paper-inner">
+          <div class="ref-item"><span class="ref-num">[1]</span>Agustiono, W., Wahyu, F. M., &amp; Findiastuti, W. (2024). An internet of things-based solar dryer: A conceptual design for seaweed cultivation in Madura. <em>BIO Web of Conferences, 146</em>, 01032. <br/><a href="https://doi.org/10.1051/bioconf/202414601032" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.1051/bioconf/202414601032</a></div>
+          <div class="ref-item"><span class="ref-num">[2]</span>Hidayati, D. R., Rum, M., &amp; Qomariyah, N. (2025). Evaluating seaweed value chain governance in Indonesia: The case of Madura Island. <em>Bulgarian Journal of Agricultural Science, 31</em>(3), 447–454.</div>
+          <div class="ref-item"><span class="ref-num">[3]</span>Kementerian Kelautan dan Perikanan Republik Indonesia. (2023). <em>Profil pasar rumput laut</em>. Direktorat Jenderal Penguatan Daya Saing Produk Kelautan dan Perikanan.</div>
+          <div class="ref-item"><span class="ref-num">[4]</span>Khan, N., Sudhakar, K., &amp; Mamat, R. (2025). Seaweed processing: Efficiency, kinetics, and quality attributes under solar drying. <em>Food Chemistry Advances, 6</em>, 100859.</div>
+          <div class="ref-item"><span class="ref-num">[5]</span>Miller, T., Mikiciuk, G., Durlik, I., Mikiciuk, M., Łobodzińska, A., &amp; Śnieg, M. (2025). The IoT and AI in agriculture: The time is now. <em>Sensors, 25</em>(12), 3583. <br/><a href="https://doi.org/10.3390/s25123583" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.3390/s25123583</a></div>
+          <div class="ref-item"><span class="ref-num">[6]</span>Rahman, S. A., &amp; Ayuba, Y. (2024). Prototype design of an IoT-based dryer and temperature monitoring device and test its utilization on the dryness and proximate levels of seaweed. <em>Acta Aquatica, 11</em>(1), 23–28. <br/><a href="https://doi.org/10.29103/aa.v11i1.13577" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.29103/aa.v11i1.13577</a></div>
+          <div class="ref-item"><span class="ref-num">[7]</span>Setiyono, Syahrul, E., &amp; Nur'ainingsih, D. (2026). Design and control of a seaweed dryer prototype powered by solar and wind energy. <em>VUBETA, 3</em>(1), 88–101. <br/><a href="https://doi.org/10.26740/vubeta.v3i1.44016" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.26740/vubeta.v3i1.44016</a></div>
+          <div class="ref-item"><span class="ref-num">[8]</span>Spijkerboer, R. C., et al. (2022). Out of steam? A social science and humanities research agenda for geothermal energy. <em>Energy Research &amp; Social Science, 92</em>, 102801. <br/><a href="https://doi.org/10.1016/j.erss.2022.102801" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.1016/j.erss.2022.102801</a></div>
+          <div class="ref-item"><span class="ref-num">[9]</span>Sudirman, A. M., Jumardi, A., Asia, N., &amp; Damis. (2024). Penerapan teknologi tepat guna untuk peningkatan komoditas rumput laut di Desa Tirowali. <em>Jurnal Abdi Insani, 11</em>(3), 1233–1240. <br/><a href="https://doi.org/10.29303/abdiinsani.v11i3.1922" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.29303/abdiinsani.v11i3.1922</a></div>
+          <div class="ref-item"><span class="ref-num">[10]</span>Wu, P., &amp; Chen, H. (2025). Assessing the global environmental benefits of Global-Value-Chain Integration Through the Lens of Embodied Carbon. <em>Sustainability, 17</em>(4), 1549. <br/><a href="https://doi.org/10.3390/su17041549" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.3390/su17041549</a></div>
+          <div class="ref-item"><span class="ref-num">[11]</span>Zhang, J., Waldron, S., Langford, Z., Julianto, B., &amp; Komarek, A. M. (2024). China's growing influence in the global carrageenan industry and implications for Indonesia. <em>Journal of Applied Phycology, 36</em>, 639–660. <br/><a href="https://doi.org/10.1007/s10811-023-03004-0" target="_blank" rel="noopener" class="ref-doi">https://doi.org/10.1007/s10811-023-03004-0</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /card 1 -->
+
+
+  <!-- ── CARD 2: Expert Judgment ── -->
+  <div class="card">
+
+    <h2 style="font-size:15px;font-weight:700;color:#0a3d28;margin-bottom:14px;">Expert Judgment</h2>
+
+    <!-- Grafik hasil.jpeg -->
+    <div style="border-radius:12px;overflow:hidden;border:1.5px solid #c8e6d8;margin-bottom:16px;">
+      <img src="hasil.jpeg" alt="Grafik Hasil Expert Judgment"
+           style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <!-- Expert accordion list -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+
+      <!-- 1. Bidang Konten -->
+      <div class="expert-card">
+        <div class="expert-head" onclick="toggleExpert(1)">
+          <div>
+            <div class="expert-field">Bidang Konten</div>
+            <div class="expert-name-sm">Dr. Ir. Ni Kadek Ayu Wirdiani, ST., MT., IPU.</div>
+          </div>
+          <div class="acc-arrow" id="earrow-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body" id="ebody-1">
+          <div style="padding:12px 15px 14px;border-top:1px solid #e4f4ed;">
+            <p style="font-size:10px;color:#2f7d5c;font-weight:600;margin-bottom:8px;">Ringkasan Aspek yang Dinilai</p>
+            <ul class="criteria-list">
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan visualisasi data sensor (suhu, kelembapan, kadar air) secara real-time pada dashboard</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kemudahan navigasi antar-menu dashboard agar tidak membingungkan pengguna</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Efisiensi alur kerja (jumlah langkah/klik) untuk mendapatkan informasi penting</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Konsistensi tata letak, warna, tipografi, dan ikon di seluruh tampilan dashboard</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan notifikasi kritis serta ketepatan bahasa dan kontras warna bagi pengguna</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Bidang TI -->
+      <div class="expert-card">
+        <div class="expert-head" onclick="toggleExpert(2)">
+          <div>
+            <div class="expert-field">Bidang Teknologi Informasi</div>
+            <div class="expert-name-sm">I Wayan Supriana, S.Si., M.Cs</div>
+          </div>
+          <div class="acc-arrow" id="earrow-2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body" id="ebody-2">
+          <div style="padding:12px 15px 14px;border-top:1px solid #e4f4ed;">
+            <p style="font-size:10px;color:#2f7d5c;font-weight:600;margin-bottom:8px;">Ringkasan Aspek yang Dinilai</p>
+            <ul class="criteria-list">
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan arsitektur transmisi data hulu-hilir (sensor → cloud → dashboard)</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kesesuaian pemilihan sensor (suhu, kelembapan, load cell) untuk lingkungan pesisir</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan pembagian peran sistem (dashboard manajer vs. HP petani sebagai penerima WhatsApp)</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kelayakan logika indikator LED di perangkat fisik lapangan sebagai sistem peringatan sekunder</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Data Science -->
+      <div class="expert-card">
+        <div class="expert-head" onclick="toggleExpert(3)">
+          <div>
+            <div class="expert-field">Bidang Data Science &amp; Pengambilan Keputusan Bisnis</div>
+            <div class="expert-name-sm">Dr. Ir. Ni Putu Sutramiani, S.Kom., M.T.</div>
+          </div>
+          <div class="acc-arrow" id="earrow-3">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body" id="ebody-3">
+          <div style="padding:12px 15px 14px;border-top:1px solid #e4f4ed;">
+            <p style="font-size:10px;color:#2f7d5c;font-weight:600;margin-bottom:8px;">Ringkasan Aspek yang Dinilai</p>
+            <ul class="criteria-list">
+              <li class="criteria-item"><span class="criteria-dot"></span>Validitas rumus perhitungan kadar air real-time: Massa Sekarang ÷ Massa Awal × 100%</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kelayakan metode ekstrapolasi linear berbasis data historis untuk fitur prediktif "Estimasi Panen"</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Ketepatan waktu keputusan dari status Merah di cloud hingga terkirimnya instruksi WhatsApp guna mencegah over-drying</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan perbedaan strategi pengolahan data antara Skenario Komunitas dan Skenario Industri</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Ekonomi -->
+      <div class="expert-card">
+        <div class="expert-head" onclick="toggleExpert(4)">
+          <div>
+            <div class="expert-field">Bidang Ekonomi dan Bisnis</div>
+            <div class="expert-name-sm">Luh Gede Krisna Dewi, SE., M.Si., Ak</div>
+          </div>
+          <div class="acc-arrow" id="earrow-4">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body" id="ebody-4">
+          <div style="padding:12px 15px 14px;border-top:1px solid #e4f4ed;">
+            <p style="font-size:10px;color:#2f7d5c;font-weight:600;margin-bottom:8px;">Ringkasan Aspek yang Dinilai</p>
+            <ul class="criteria-list">
+              <li class="criteria-item"><span class="criteria-dot"></span>Kesesuaian Value Proposition Canvas (pains, gains, relievers) dengan kebutuhan riil petani rumput laut tradisional</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Ketepatan analisis potensi pasar rumput laut hulu-hilir sebagai dasar kelayakan usaha</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kewajaran hitung-hitungan keuangan: modal awal, HPP, margin profit, dan realisme Payback Period</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kewajaran peta jalan bisnis mulai dari Fase Penetrasi, Break-Even, hingga Dominasi Pasar Nasional</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Ergonomi -->
+      <div class="expert-card">
+        <div class="expert-head" onclick="toggleExpert(5)">
+          <div>
+            <div class="expert-field">Bidang Ergonomi</div>
+            <div class="expert-name-sm">Gede Arda, S.TP., M.Sc &amp; Dr. Drs. I Wayan Santiyasa, M.Si</div>
+          </div>
+          <div class="acc-arrow" id="earrow-5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body" id="ebody-5">
+          <div style="padding:12px 15px 14px;border-top:1px solid #e4f4ed;">
+            <p style="font-size:10px;color:#2f7d5c;font-weight:600;margin-bottom:8px;">Ringkasan Aspek yang Dinilai</p>
+            <ul class="criteria-list">
+              <li class="criteria-item"><span class="criteria-dot"></span>Kemudahan penggunaan fisik perangkat bagi petani pesisir (peletakan sampel pada Tray tanpa keahlian khusus)</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kejelasan lampu indikator LED tiga tingkat (Hijau → Kuning → Merah) di lapangan agar petani tidak perlu menatap LCD terus-menerus</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Ketahanan fisik perangkat (kotak kontrol weatherproof) terhadap cuaca panas, kelembapan ekstrem, dan korosi air laut</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Kesesuaian dimensi, ukuran, dan bobot komponen saat dipasang pada tiang penjemuran</li>
+              <li class="criteria-item"><span class="criteria-dot"></span>Keandalan desain alat dalam meminimalkan risiko kesalahan operasional petani (human error)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /expert list -->
+  </div><!-- /card 2 -->
+
+
+  <!-- ── CARD 3: Identitas Tim ── -->
+  <div class="card">
+    <div class="sec-label" style="margin-bottom:12px;">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2f7d5c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Identitas Tim
+    </div>
+    <div class="member-row">
+      <div class="av" style="background:linear-gradient(135deg,#c8f0e0,#88d8b0);border:1.5px solid #5bb88a;">🌊</div>
+      <div>
+        <div class="mname">Ni Desak Made Devi Suciani</div>
+        <div class="mrole">Prodi Akuntansi · Fakultas Ekonomi dan Bisnis</div>
+      </div>
+    </div>
+    <div class="member-row">
+      <div class="av" style="background:linear-gradient(135deg,#c8f0e0,#88d8b0);border:1.5px solid #5bb88a;">🌿</div>
+      <div>
+        <div class="mname">Ni Putu Candradevi Davantari</div>
+        <div class="mrole">Prodi Teknologi Informasi · Fakultas Teknik</div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+    <p style="font-size:10px;color:#6f9484;text-align:center;line-height:1.7;">
+      © 2026 Team Orion · Universitas Udayana, Bali<br/>
+      Cabang Penulisan Karya Tulis Ilmiah — KBMK 2026
+    </p>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  function toggleAcc(id) {
+    const body  = document.getElementById('body-' + id);
+    const arrow = document.getElementById('arrow-' + id);
+    const open  = body.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  }
+
+  function toggleExpert(n) {
+    const body  = document.getElementById('ebody-' + n);
+    const arrow = document.getElementById('earrow-' + n);
+    const open  = body.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  }
+</script>
+</body>
+</html>
